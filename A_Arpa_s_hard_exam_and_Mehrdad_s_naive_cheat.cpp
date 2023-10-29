@@ -1,27 +1,19 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define int long long
+#define ll long long
 #define mod 10
 
-bool is_prime(int a) {
-    if (a <= 1) {
-        return false;
-    }
-    if (a <= 3) {
-        return true;
-    }
-    if (a % 2 == 0 || a % 3 == 0) {
-        return false;
-    }
-    for (int i = 5; i * i <= a; i += 6) {
-        if (a % i == 0 || a % (i + 2) == 0) {
-            return false;
-        }
-    }
-    return true;
+bool prime(ll a)
+{
+    if (a == 1)
+        return 0;
+    for (int i = 2; i <= round(sqrt(a)); ++i)
+        if (a % i == 0)
+            return 0;
+    return 1;
 }
 
-int gcd(int a, int b)
+ll gcd(ll a, ll b)
 {
     if (b == 0)
         return a;
@@ -30,11 +22,11 @@ int gcd(int a, int b)
     return gcd(b, a % b);
 }
 
-int lcm(int a, int b)
+ll lcm(ll a, ll b)
 {
     return (a * b) / gcd(a, b);
 }
-int power(int x, int y)
+ll power(ll x, ll y)
 {
     if (y == 0)
         return 1;
@@ -63,12 +55,15 @@ int nCr(int n, int r)
         p = 1;
     return p;
 }
+
 void solve()
 {
-    
+    ll n;
+    cin >> n ;
+    cout << power(1378, n)<<endl;
 }
 
-signed main()
+int main()
 {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
