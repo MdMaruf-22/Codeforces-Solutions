@@ -68,5 +68,10 @@
         "typeindex": "cpp",
         "typeinfo": "cpp",
         "valarray": "cpp"
-    }
+    },
+    "hts.path.correctSolution": "/D_GCD_sequence.cpp",
+    "hts.path.wrongSolution": "/maruf.cpp",
+    "hts.path.generatorFile": "/new.cpp",
+    "hts.path.checker": "rcmp9.cpp",
+    "hts.generator.argument": "100"
 }
