@@ -1,51 +1,45 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
+#include <algorithm>
 using namespace std;
-#define int long long
 
-vector<int> h;  // Store flower heights
-vector<int> dp;  // Memoization array
-
-int calculateTime(int i, int n) {
-    if (i == n - 1) {
-        // Base case: The last flower takes exactly its height seconds to reach zero
-        return h[i];
+bool check(int k, const vector<pair<int, int>>& seg) {
+    int ll = 0, rr = 0;
+    for (const auto& e : seg) {
+        ll = max(ll - k, e.first);
+        rr = min(rr + k, e.second);
+        if (ll > rr) {
+            return false;
+        }
     }
-    
-    if (dp[i] != -1) {
-        // If we've already calculated the time for this flower, return the memoized result
-        return dp[i];
-    }
-    
-    // Recursive case: The time for the current flower is the maximum between its height
-    // and the time for the next flower + 1 second due to the wind
-    dp[i] = max(h[i], calculateTime(i + 1, n) + 1);
-    
-    return dp[i];
+    return true;
 }
 
 void solve() {
     int n;
     cin >> n;
-    
-    h.resize(n);
-    dp.assign(n, -1);  // Reset memoization array
-    
-    for (auto &x: h) {
-        cin >> x;
+    vector<pair<int, int>> seg(n);
+    for (int i = 0; i < n; ++i) {
+        cin >> seg[i].first >> seg[i].second;
     }
-    cout << calculateTime(0, n) << '\n';
+
+    int l = -1, r = 1e9;
+    while (r - l > 1) {
+        int mid = (r + l) / 2;
+        if (check(mid, seg)) {
+            r = mid;
+        } else {
+            l = mid;
+        }
+    }
+    cout << r << endl;
 }
 
-signed main() {
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
-    
+int main() {
     int t;
     cin >> t;
-    
     while (t--) {
         solve();
     }
-    
     return 0;
 }
