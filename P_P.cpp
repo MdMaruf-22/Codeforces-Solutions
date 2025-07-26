@@ -1,86 +1,58 @@
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
-
 #define int long long
-#define give_number_of_one_in_binary(x) __builtin_popcount(x)
-#define count_trailing_zero_in_binary(x) __builtin_ctz(x)
-#define count_leading_zero_in_binary(x) __builtin_clz(x)
-#define read(v, n) for (int i = 0; i < n; i++) cin >> v[i]
-#define print(v) for (auto& el : v) cout << el << ' '; cout << endl
-#define all(v) v.begin(),v.end()
-#define rall(v) v.rbegin(),v.rend()
-const int mod = 1e9+7;
 
-bool is_prime(int a) {
-    if (a <= 1) {
-        return false;
+void solve()
+{
+    int n;
+    cin >> n;
+    vector<int> vc(n);
+    vector<vector<int>> tree(n + 1);  // Tree adjacency list (1-based indexing)
+    
+    // Read the weights of the nodes
+    for (int i = 0; i < n; i++) {
+        cin >> vc[i];
     }
-    if (a <= 3) {
-        return true;
-    }
-    if (a % 2 == 0 || a % 3 == 0) {
-        return false;
-    }
-    for (int i = 5; i * i <= a; i += 6) {
-        if (a % i == 0 || a % (i + 2) == 0) {
-            return false;
+    
+    // Find max and second max weights
+    int mx = *max_element(vc.begin(), vc.end());
+    int secMax = LLONG_MIN;  // Initialize to a very low value to ensure second max is found
+    
+    for (int i = 0; i < n; i++) {
+        if (vc[i] != mx) {
+            secMax = max(secMax, vc[i]);
         }
     }
-    return true;
-}
-
-int gcd(int a, int b) {
-    if (b == 0)
-        return a;
-    if (b > a)
-        return gcd(b, a);
-    return gcd(b, a % b);
-}
-
-int lcm(int a, int b) {
-    return (a * b) / gcd(a, b);
-}
-
-int power(int x, int y) {
-    if (y == 0)
-        return 1;
-    else if (y % 2 == 0)
-        return ((power(x, y / 2) % mod) * (power(x, y / 2) % mod)) % mod;
-    else
-        return ((((x % mod) * ((power(x, y / 2) % mod))) % mod * (power(x, y / 2) % mod)) % mod) % mod;
-}
-
-int nCr(int n, int r) {
-    long long p = 1, k = 1;
-    if (n - r < r)
-        r = n - r;
-    if (r != 0) {
-        while (r) {
-            p *= n;
-            k *= r;
-            long long m = __gcd(p, k);
-            p /= m;
-            k /= m;
-            n--;
-            r--;
+    
+    // Store all the nodes with the second maximum weight
+    vector<int> secondMaxNodes;
+    for (int i = 0; i < n; i++) {
+        if (vc[i] == secMax) {
+            secondMaxNodes.push_back(i + 1);  // Store 1-based index
         }
-    } else
-        p = 1;
-    return p;
+    }
+
+    // Read the tree edges
+    for (int i = 0; i < n - 1; i++) {
+        int u, v;
+        cin >> u >> v;
+        tree[u].push_back(v);
+        tree[v].push_back(u);
+    }
+
+    // Output the nodes with the second max weight
+    cout << "Second Maximum Weight: " << secMax << "\n";
+    cout << "Nodes with Second Maximum Weight: ";
+    for (int node : secondMaxNodes) {
+        cout << node << " ";
+    }
+    cout << "\n";
 }
 
-void solve() {
-    int n;cin>>n;
-    int a,b,c,d;cin>>a>>b>>c>>d;
-    int ans1 = pow(2,a) * (1-pow(2,c-b+1))/(-1);
-    int ans2 = pow(3,c) * (1-pow(3,d-b+1))/(-2);
-    cout<<ans1<<" "<<ans2<<endl;
-}
-
-signed main() {
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
-    int t = 1;
+signed main()
+{
+    ios_base::sync_with_stdio(false);cin.tie(NULL);
+    int t;
     cin >> t;
     while (t--) {
         solve();
